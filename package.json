@@ -1,7 +1,8 @@
 {
   "name": "@esnes/animated-canvas",
   "version": "0.1.0",
-  "module": "dist/index.js",
+  "main": "index.cjs.js",
+  "module": "index.js",
   "devDependencies": {
     "rollup": "^0.64.0"
   },
@@ -10,8 +11,5 @@
     "dev": "rollup -c -w",
     "test": "node test/test.js",
     "pretest": "npm run build"
-  },
-  "files": [
-    "dist"
-  ]
+  }
 }
