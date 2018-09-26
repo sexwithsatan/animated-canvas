@@ -1,33 +1,21 @@
-import repaint from './repaint.js'
-const {requestAnimationFrame} = window
-
-function loop(ms, now, next, {
-  start = now,
-  delta = 0
-} = {}) {
-  const elapsed = now - start + delta
-  const handle = requestAnimationFrame(function (t) {
-    loop(ms, t, next, {
-      start: now,
-      delta: elapsed % ms
-    })
-  })
-
-  if (elapsed > ms) {
-    next(handle, elapsed)
-  }
-}
+import step from './step.js'
+import enqueue from './enqueue.js'
 
 export default
-function animate(fps, frames, blit) {
-  const g = frames()
-  const ms = 1000/fps
-  const handle = requestAnimationFrame(function (t) {
-    repaint(handle, blit, g.next())
-    loop(ms, t, function (handle, elapsed) {
-      repaint(handle, blit, g.next(elapsed))
-    })
-  })
+function animate(states) {
+  return states(play, pause)
+}
 
+function pause(g) {
+  g.return()
+}
+
+function play(fps, frames) {
+  const g = frames()
+  const handle = requestAnimationFrame(t => {
+    enqueue(1000/fps, g, t)
+  })
+  
+  step(handle, g.next())
   return g
 }
