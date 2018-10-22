@@ -1,3 +1,4 @@
+/* globals requestAnimationFrame */
 import step from './step.js'
 import enqueue from './enqueue.js'
 
