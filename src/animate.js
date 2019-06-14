@@ -1,22 +1,13 @@
-/* globals requestAnimationFrame */
-import step from './step.js'
-import enqueue from './enqueue.js'
+/* global requestAnimationFrame */
+import animateFrame from './animate-frame.js'
+import nextFrame from './next-frame.js'
 
 export default
-function animate(states) {
-  return states(play, pause)
-}
-
-function pause(g) {
-  g.return()
-}
-
-function play(fps, frames) {
-  const g = frames()
+function animate(iterable, {fps}) {
   const handle = requestAnimationFrame(t => {
-    enqueue(1000/fps, g, t)
+    animateFrame(iterable, 1000/fps, t)
   })
   
-  step(handle, g.next())
-  return g
+  nextFrame(iterable[Symbol.iterator]().next(undefined), handle)
+  return iterable
 }
