@@ -9,5 +9,4 @@ function animate(iterable, {fps}) {
   })
   
   nextFrame(iterable[Symbol.iterator]().next(undefined), handle)
-  return iterable
 }
