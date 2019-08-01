@@ -2,7 +2,7 @@
 
 export default
 function nextFrame({done}, handle) {
-  if (done === true) {
+  if (done) {
     cancelAnimationFrame(handle)
   }
 }
