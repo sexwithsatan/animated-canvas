@@ -10,20 +10,15 @@ function animate(iterable, {fps}) {
   
   nextFrame(iterable[Symbol.iterator]().next(undefined), handle)
 
-  function animateFrame(now, {
-    start = now,
-    delta = 0
-  } = {}) {
-    const elapsed = now - start + delta
+  function animateFrame(now, start = now) {
+    const delta = now - start
+    const lag = delta % interval
     const handle = requestAnimationFrame(t => {
-      animateFrame(t, {
-        start: now,
-        delta: elapsed % interval
-      })
+      animateFrame(t, now - lag)
     })
 
-    if (elapsed > interval) {
-      nextFrame(iterable[Symbol.iterator]().next(elapsed), handle)
+    if (delta > interval) {
+      nextFrame(iterable[Symbol.iterator]().next(delta), handle)
     }
   }
 }
